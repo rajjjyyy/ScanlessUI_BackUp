@@ -1,5 +1,8 @@
+using System.Collections;
 using System.IO;
+using System.Threading;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +16,11 @@ public class NavigationUIScript : MonoBehaviour
     [SerializeField] private GameObject RejectPanel;
     [SerializeField] private GameObject NavCanvas;
     [SerializeField] private GameObject InitiateCanvas;
+    [SerializeField] private GameObject StartPanel;
     [SerializeField] private GameObject StartCanvas;
+
+    private Animator animator;
+    private Animator startAnimation;
     private string resourcePath;
     private string filePath;
     //public static NavigationUIScript navScrpt;
@@ -33,6 +40,8 @@ public class NavigationUIScript : MonoBehaviour
 
     void Start()
     {
+        animator = UpdatedPanel.GetComponent<Animator>();
+        startAnimation = StartPanel.GetComponent<Animator>();
         NavCanvas.SetActive(true);
         InitiateCanvas.SetActive(false);
         StartCanvas.SetActive(false);
@@ -50,15 +59,6 @@ public class NavigationUIScript : MonoBehaviour
             RejectPanel.SetActive(true);
         }
         
-       /* if (navScrpt == null)
-        {
-            navScrpt = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }*/
     }
 
     [System.Serializable]
@@ -82,17 +82,14 @@ public class NavigationUIScript : MonoBehaviour
             Debug.Log(updateJson);
             File.WriteAllText(filePath, updateJson);
             UpdatedPanel.SetActive(true);
+            animator.SetTrigger("UpdateInit");
+            fromInit.text = from.text.Trim();
+            toInit.text = to.text.Trim();
         }
         else
         {
             RejectPanel.SetActive(true);
         }
-    }
-    public void ClosePanel()
-    {
-        UpdatedPanel.SetActive(false);
-        fromInit.text = from.text.Trim();
-        toInit.text = to.text.Trim();
     }
     public void CloseReject()
     {
@@ -110,9 +107,16 @@ public class NavigationUIScript : MonoBehaviour
     public void InitiateCanvasToStartCanvas()
     {
         NavCanvas.SetActive(false);
-        InitiateCanvas.SetActive(false);
-        StartCanvas.SetActive(true);
+        InitiateCanvas.SetActive(true);
+        StartPanel.SetActive(true);
+        startAnimation.SetTrigger("OpenPanel");
     }
+    public void CloseStartPanel()
+    {
+        startAnimation.SetTrigger("ClosePanel");
+        //StartPanel.SetActive(false);
+    }
+
     public void InitiateCanvasToNavCanvas()
     {
         NavCanvas.SetActive(true);
@@ -122,7 +126,15 @@ public class NavigationUIScript : MonoBehaviour
 
     public void SwitchScene()
     {
-        GlobalEventScript.TriggerEvent();
+        NavCanvas.SetActive(false);
+        InitiateCanvas.SetActive(false);
+        StartCanvas.SetActive(true);
+        StartCoroutine(ChangeScene());
+    }
+
+    private IEnumerator ChangeScene()
+    {
+        yield return new WaitForSeconds(5f);
         SceneManager.LoadScene(1);
     }
 }

@@ -125,6 +125,6 @@ public class TextUIScript : MonoBehaviour
     public void ArrivedToNavigateUI()
     {
         ArrivedPanel.SetActive(false);
-        SceneManager.LoadScene(0);
+        Application.Quit();
     }
 }

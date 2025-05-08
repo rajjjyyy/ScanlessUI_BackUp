@@ -5,10 +5,15 @@ public class DictionaryClass
 {
     public Dictionary<string, Vector3[]> environmentDisplacement = new Dictionary<string, Vector3[]>();
     public Dictionary<string, Vector3> destinationPoint = new Dictionary<string, Vector3>();
-    private float xwall = 40;
-    private float zwall =  128.94f;
-    private float negXwall = -138.1482f;
-    private float negZwall = -50.16707f;
+    private float xwall = 90;
+    private float zwall =  180;
+    private float negXwall = -90;
+    private float negZwall = 0;
+
+    //private float xwall = 40;
+    //private float zwall =  128.94f;
+    //private float negXwall = -138.1482f;
+    //private float negZwall = -50.16707f;
 
     public DictionaryClass()
     {
