@@ -117,13 +117,16 @@ public class TextUIScript : MonoBehaviour
         return total;
     }
 
-    public void ARToNavigateUI()
+    public void ExitARButton()
     {
-        SceneManager.LoadScene(0);
+        Debug.Log("Exit Button Works");
+        //SceneManager.LoadScene(0);
+        Application.Quit();
     }
 
-    public void ArrivedToNavigateUI()
+    public void ArrivedDestinationButton()
     {
+        Debug.Log("Panel Button Works");
         ArrivedPanel.SetActive(false);
         Application.Quit();
     }

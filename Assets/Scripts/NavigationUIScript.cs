@@ -134,7 +134,7 @@ public class NavigationUIScript : MonoBehaviour
 
     private IEnumerator ChangeScene()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(1);
     }
 }
